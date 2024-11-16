@@ -18,6 +18,7 @@ public partial class MainPage : ContentPage
         this.Loaded += MainPage_Loaded;
         LP.Unloaded += LP_Unloaded;
 
+        //refresher
         lstData.Refreshing += delegate
         {
             LoadData();
