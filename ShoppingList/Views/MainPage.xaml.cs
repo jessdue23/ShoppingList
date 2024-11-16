@@ -19,11 +19,16 @@ public partial class MainPage : ContentPage
         LP.Unloaded += LP_Unloaded;
 
         //refresher
-        lstData.Refreshing += delegate
-        {
-            LoadData();
-            lstData.IsRefreshing = false;
-        };
+        lstData.Refreshing += LstDataOnRefreshing;
+            
+            
+     
+    }
+
+    async void LstDataOnRefreshing(object sender, EventArgs e)
+    {
+        LoadData();
+        lstData.IsRefreshing = false;
     }
 
     private void LP_Unloaded(object sender, EventArgs e)
