@@ -20,61 +20,78 @@ public partial class NewAccountPage : ContentPage
     {
         
         //password match
-        
-        //valid email address
-        
-        
-        //api
-        var data = JsonConvert.SerializeObject(new UserAccount(txtUser.Text, txtPassword1.Text, txtEmail.Text));
-        var client = new HttpClient();
-
-        var response = await client.PostAsync(new Uri("https://joewetzel.com/fvtc/account/createuser"), 
-            new StringContent(data, Encoding.UTF8, "application/json"));
-
-        var AccountStatus = response.Content.ReadAsStringAsync().Result;
-        
-        //user exists?
-        if (AccountStatus == "user exists")
+        //if passwords match then check email
+        //if email is valid then continue
+        if (txtPassword1.Text == txtPassword2.Text)
         {
-            await DisplayAlert("Error", "Username in use", "OK");
-            return;
-        }
-        
-        //is email in use?
-        if (AccountStatus == "email exists")
-        {
-            await DisplayAlert("Error", "Email in use", "OK");
-            return;
-        }
-        
-        if (AccountStatus == "complete")
-        {
-            
-            //login to account and get session key
-            response = await client.PostAsync(new Uri("https://joewetzel.com/fvtc/account/login"), 
-                new StringContent(data, Encoding.UTF8, "application/json"));
-
-            var SKey = response.Content.ReadAsStringAsync().Result;
-            
-            if(!string.IsNullOrEmpty(SKey) && SKey.Length < 50)
+            if ((txtEmail.Text).Contains("@"))
             {
-                App.SessionKey = SKey;
-                Navigation.PopModalAsync();
+                //api
+                var data = JsonConvert.SerializeObject(new UserAccount(txtUser.Text, txtPassword1.Text, txtEmail.Text));
+                var client = new HttpClient();
+
+                var response = await client.PostAsync(new Uri("https://joewetzel.com/fvtc/account/createuser"), 
+                    new StringContent(data, Encoding.UTF8, "application/json"));
+
+                var AccountStatus = response.Content.ReadAsStringAsync().Result;
+        
+                //user exists?
+                if (AccountStatus == "user exists")
+                {
+                    await DisplayAlert("Error", "Username in use", "OK");
+                    return;
+                }
+        
+                //is email in use?
+                if (AccountStatus == "email exists")
+                {
+                    await DisplayAlert("Error", "Email in use", "OK");
+                    return;
+                }
+        
+                if (AccountStatus == "complete")
+                {
+            
+                    //login to account and get session key
+                    response = await client.PostAsync(new Uri("https://joewetzel.com/fvtc/account/login"), 
+                        new StringContent(data, Encoding.UTF8, "application/json"));
+
+                    var SKey = response.Content.ReadAsStringAsync().Result;
+            
+                    if(!string.IsNullOrEmpty(SKey) && SKey.Length < 50)
+                    {
+                        App.SessionKey = SKey;
+                        Navigation.PopModalAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "Sorry there was an issue logging you in", "OK");
+                        return;
+                    }
+            
+            
+
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Error occured creating account", "OK");
+                    return;
+                }
             }
             else
             {
-                await DisplayAlert("Error", "Sorry there was an issue logging you in", "OK");
-                return;
+                DisplayAlert("Error", "Invalid Email", "OK");
             }
-            
-            
-
         }
         else
         {
-            await DisplayAlert("Error", "Error occured creating account", "OK");
-            return;
+            DisplayAlert("Error", "Passwords Do Not Match", "OK");
         }
+        
+        
+        
+        
+        
 
     }
 }
