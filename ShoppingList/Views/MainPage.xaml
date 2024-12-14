@@ -37,7 +37,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 
-                <Button Grid.Row="2" Grid.Column="0" Text="Clear List" Grid.ColumnSpan="3"></Button>
+                <Button Grid.Row="2" Grid.Column="0" Text="Clear List" Grid.ColumnSpan="3" ></Button>
                 
             </Grid>
         </StackLayout>

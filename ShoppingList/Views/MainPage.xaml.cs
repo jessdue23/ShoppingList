@@ -51,9 +51,12 @@ public partial class MainPage : ContentPage
         }
         else
         {
+            //txtInput.Text = App.SessionKey;
             LoadData();
         }
+
         
+
     }
 
     async void Logout_OnClicked(object sender, EventArgs e)
@@ -73,7 +76,7 @@ public partial class MainPage : ContentPage
         var data = JsonConvert.SerializeObject(new UserData(null, txtInput.Text, App.SessionKey));
         var client = new HttpClient();
         
-        //login to account and get session key
+        
         await client.PostAsync(new Uri("https://joewetzel.com/fvtc/account/data"), 
             new StringContent(data, Encoding.UTF8, "application/json"));
 
@@ -94,6 +97,7 @@ public partial class MainPage : ContentPage
         var UserDataObject = JsonConvert.DeserializeObject<UserDataCollection>(wsJson);
 
         lstData.ItemsSource = UserDataObject.UserDataItems;
+        
     }
 
     async void MenuItem_OnClicked(object sender, EventArgs e)
@@ -115,6 +119,24 @@ public partial class MainPage : ContentPage
         LoadData();
 
     }
-    
-    
+
+
+    /*async void ClearList_OnClicked(object sender, EventArgs e)
+    {
+        
+        var data = JsonConvert.SerializeObject(new UserData(App.SessionKey));
+
+        var client = new HttpClient();
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri("https://joewetzel.com/fvtc/account/data"),
+            Content = new StringContent(data, Encoding.UTF8, "application/json")
+        };
+
+        await client.SendAsync(request);
+        
+        LoadData();
+    }*/
 }

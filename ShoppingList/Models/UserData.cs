@@ -10,12 +10,17 @@ public class UserData
 {
     public string dataID { get; set; }
     public string dataValue { get; set; }
-    public string userkey { get; set; }
+    public string userKey { get; set; }
 
-    public UserData(string dataID, string dataValue, string userkey)
+    public UserData(string dataID, string dataValue, string userKey)
     {
         this.dataID = dataID;
         this.dataValue = dataValue;
-        this.userkey = userkey;
+        this.userKey = userKey;
+    }
+    
+    public UserData(string userKey)
+    {
+        this.userKey = userKey;
     }
 }
